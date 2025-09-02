@@ -33,24 +33,21 @@ export default function StarBackground({ isDarkMode }) {
                 size: Math.random() * 2 + 1,
                 x: Math.random() * 100,
                 y: Math.random() * 20,
-                delay: Math.random() * 15,
+                delay: Math.random() * 0.1,
                 animationDuration: Math.random() * 3 + 3,
             });
         }
         setMeteors(newMeteors);
     };
 
-    // New useEffect to handle meteors and stars on component mount
     useEffect(() => {
         generateMeteors();
-        generateStars(); // Generate stars and meteors only once
+        generateStars();
         
-        // Add a resize listener for stars, which will be cleaned up
         window.addEventListener("resize", generateStars);
         return () => window.removeEventListener("resize", generateStars);
-    }, []); // Empty dependency array ensures this runs only once
+    }, []);
 
-    // The component will only render the background if it's in dark mode
     if (!isDarkMode) {
         return null;
     }
@@ -80,13 +77,18 @@ export default function StarBackground({ isDarkMode }) {
             {meteors.map((meteor) => (
                 <div
                     key={meteor.id}
-                    className="meteor"
+                    className="meteor" // Added the animate-meteor class
                     style={{
+                        position: "absolute",
                         width: `${meteor.size * 50}px`,
                         height: `${meteor.size * 2}px`,
                         left: `${meteor.x}%`,
                         top: `${meteor.y}%`,
-                        animation: `meteor ${meteor.animationDuration}s linear infinite, shimmer 0.8s ease-in-out infinite`,
+                        transformOrigin: "top left",
+                        background: "linear-gradient(to right, rgba(255,255,255,0.8), transparent)",
+                        borderRadius: "50%",
+                        // This is the key change
+                        animation: `meteor ${meteor.animationDuration}s linear ${meteor.delay}s infinite, shimmer 0.8s ease-in-out infinite`,
                     }}
                 />
             ))}

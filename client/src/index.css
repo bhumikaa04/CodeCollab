@@ -277,3 +277,7 @@
 .animate-wind-wave {
   animation: wind-wave 4s ease-in-out infinite;
 }
+
+.animate-meteor {
+  animation: var(--animate-meteor);
+}
